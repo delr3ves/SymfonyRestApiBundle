@@ -10,10 +10,11 @@
 
 namespace Delr3ves\RestApiBundle\Annotations;
 
-
+use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
+ * @Target("CLASS")
  */
 class XmlContainerTag {
     public $tagname;

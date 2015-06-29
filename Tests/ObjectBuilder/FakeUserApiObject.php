@@ -3,7 +3,6 @@
  * @author Sergio Arroyo Cuevas <@delr3ves>
  */
 
-
 namespace Delr3ves\RestApiBundle\Tests\ObjectBuilder;
 
 use Delr3ves\RestApiBundle\ApiObject\BaseApiObject;

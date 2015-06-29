@@ -10,9 +10,13 @@
 
 namespace Delr3ves\RestApiBundle\Annotations;
 
+use Doctrine\Common\Annotations\Annotation;
+
 /**
  * @Annotation
+ * @Target({"PROPERTY"})
  */
+
 class TypeHint {
     public $hint;
 
