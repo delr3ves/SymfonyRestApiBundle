@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<user>
+ <username>irrelevantUsername</username>
+ <firstname>irrelevantFirstname</firstname>
+ <lastname>irrelevantLastname</lastname>
+ <locale>es</locale>
+ <avatar/>
+ <personalInfo/>
+ <buddies>
+  <user>
+   <username>irrelevantUsername</username>
+   <firstname>irrelevantFirstname</firstname>
+   <lastname>irrelevantLastname</lastname>
+   <locale>es</locale>
+   <avatar/>
+   <personalInfo/>
+   <buddies/>
+  </user>
+ </buddies>
+</user>

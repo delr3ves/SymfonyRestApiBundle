@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<users>
+ <user>
+  <username>irrelevantUsername</username>
+  <firstname>irrelevantFirstname</firstname>
+  <lastname>irrelevantLastname</lastname>
+  <locale>es</locale>
+  <avatar/>
+  <personalInfo>
+   <email>email</email>
+   <signDate>1983-05-23T00:00:00</signDate>
+   <gender>gender</gender>
+   <location/>
+  </personalInfo>
+ </user>
+</users>

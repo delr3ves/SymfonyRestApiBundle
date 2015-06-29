@@ -1,0 +1,22 @@
+<user>
+    <username>irrelevantUsername</username>
+    <firstname/>
+    <lastname/>
+    <avatar/>
+    <locale>es</locale>
+    <personalInfo>
+        <email>email</email>
+        <gender>gender</gender>
+        <signDate>23-05-1983T00:00:00</signDate>
+    </personalInfo>
+    <buddies>
+        <user>
+            <username>buddieName1</username>
+            <locale>fr</locale>
+        </user>
+        <user>
+            <username>buddieName2</username>
+            <locale>en</locale>
+        </user>
+    </buddies>
+</user>

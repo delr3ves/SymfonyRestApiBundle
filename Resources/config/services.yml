@@ -1,0 +1,161 @@
+parameters:
+#    api.example.class: Delr3ves\RestApiBundle\Example
+
+services:
+    delr3ves.api.public.api.listener:
+        class: Delr3ves\RestApiBundle\Listener\PublicApiListener
+        calls:
+          -  [setUrlPrefixes, [%delr3ves_rest_api.url_prefix%]]
+
+    delr3ves.api.method.changing.listener:
+        class: Delr3ves\RestApiBundle\Listener\QueryParamsToHeadersListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, priority: 256 }
+
+    delr3ves.api.add.paginated.paramslistener:
+        class: Delr3ves\RestApiBundle\Listener\AddPaginatedParamsListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request}
+
+    delr3ves.api.accept.header.validator.listener:
+        class: Delr3ves\RestApiBundle\Listener\AcceptHeaderValidatorListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request }
+        arguments:
+            - '@delr3ves.api.content.type.utils'
+
+    delr3ves.api.unmarshaller.listener:
+        class: Delr3ves\RestApiBundle\Listener\UnmarshallerListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request}
+        arguments:
+            - '@delr3ves.api.unmarshaller'
+
+    delr3ves.api.grant.listener:
+        class: Delr3ves\RestApiBundle\Listener\GrantListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.request}
+        arguments:
+            - '@security.context'
+
+    delr3ves.api.exception.serializer.listener:
+        class: Delr3ves\RestApiBundle\Listener\ExceptionSerializerListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception, priority: 150 }
+        arguments:
+            - '@delr3ves.api.content.type.utils'
+            - '@delr3ves.api.marshaller'
+
+    delr3ves.api.marshaller.listener:
+        class: Delr3ves\RestApiBundle\Listener\MarshallerListener
+        parent: delr3ves.api.public.api.listener
+        tags:
+            - {name: kernel.event_listener, event: kernel.view }
+        arguments:
+            - '@delr3ves.api.content.type.utils'
+            - '@delr3ves.api.marshaller'
+            - '@delr3ves.api.parameter.utils'
+
+    delr3ves.api.annotation.reader:
+        class: Delr3ves\RestApiBundle\Annotations\ApiAnnotationReader
+
+    delr3ves.api.parameter.utils:
+        class: Delr3ves\RestApiBundle\Util\ParameterUtils
+
+    delr3ves.api.embedded.propperties.utils:
+        class: Delr3ves\RestApiBundle\Marshalling\EmbeddedPropertiesUtils
+        arguments:
+            - '@delr3ves.api.annotation.reader'
+
+    ########################
+    #### UNMARSHALLING #####
+    ########################
+
+    delr3ves.api.unmarshaller:
+        class: Delr3ves\RestApiBundle\Unmarshalling\UnmarshallerImpl
+        arguments:
+            - '@delr3ves.api.specific.format.unmarshaller.factory'
+
+    delr3ves.api.specific.format.unmarshaller.factory:
+        class: Delr3ves\RestApiBundle\Unmarshalling\SpecificFormatUnmarshallerFactory
+        arguments:
+            - '@delr3ves.api.content.type.utils'
+            - '@delr3ves.api.xml.unmarshaller'
+            - '@delr3ves.api.json.unmarshaller'
+
+    delr3ves.api.xml.unmarshaller:
+        class: Delr3ves\RestApiBundle\Unmarshalling\XmlUnmarshaller
+        arguments:
+            - '@delr3ves.api.annotation.reader'
+
+    delr3ves.api.json.unmarshaller:
+        class: Delr3ves\RestApiBundle\Unmarshalling\JsonUnmarshaller
+        arguments:
+            - '@delr3ves.api.array.to.object.builder'
+
+
+    delr3ves.api.array.to.object.builder:
+        class: Delr3ves\RestApiBundle\Unmarshalling\RecursiveArrayToObjectBuilder
+        arguments:
+            - '@delr3ves.api.annotation.reader'
+
+    delr3ves.api.content.type.utils:
+        class: Delr3ves\RestApiBundle\Unmarshalling\ContentTypeUtils
+
+    ######################
+    #### MARSHALLING #####
+    ######################
+
+    delr3ves.api.marshaller:
+        class: Delr3ves\RestApiBundle\Marshalling\MarshallerImpl
+        arguments:
+            - '@delr3ves.api.specific.format.marshaller.factory'
+
+
+    delr3ves.api.specific.format.marshaller.factory:
+        class: Delr3ves\RestApiBundle\Marshalling\SpecificFormatMarshallerFactory
+        arguments:
+            - '@delr3ves.api.content.type.utils'
+            - '@delr3ves.api.xml.marshaller'
+            - '@delr3ves.api.json.marshaller'
+
+    delr3ves.api.recursive.object.to.array:
+        class: Delr3ves\RestApiBundle\Marshalling\RecursiveObjectToArray
+        arguments:
+          - '@delr3ves.api.embedded.propperties.utils'
+
+    delr3ves.api.json.marshaller:
+        class: Delr3ves\RestApiBundle\Marshalling\JsonMarshaller
+        arguments:
+          - '@delr3ves.api.recursive.object.to.array'
+
+
+    delr3ves.api.xml.marshaller:
+        class: Delr3ves\RestApiBundle\Marshalling\XmlMarshaller
+        arguments:
+            - '@delr3ves.api.annotation.reader'
+            - '@delr3ves.api.embedded.propperties.utils'
+
+    delr3ves.api_doc.extractor.api.object.parser:
+        class: Delr3ves\RestApiBundle\Docs\NelmioApiObjectParser
+        arguments:
+            - '@delr3ves.api.annotation.reader'
+            - '@router'
+        tags:
+            - {name: nelmio_api_doc.extractor.parser, priority: 1}
+
+    delr3ves.api.object.populator:
+       class: Delr3ves\RestApiBundle\Docs\ApiObjectPopulator
+       arguments:
+          - '@delr3ves.api.annotation.reader'
+
+    delr3ves.example.object.controller:
+        class: Delr3ves\RestApiBundle\Controller\ExampleObjectController
+        arguments:
+            - '@delr3ves.api.object.populator'

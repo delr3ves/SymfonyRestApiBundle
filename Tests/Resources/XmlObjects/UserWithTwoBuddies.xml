@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<user>
+ <username>irrelevantUsername</username>
+ <firstname>irrelevantFirstname</firstname>
+ <lastname>irrelevantLastname</lastname>
+ <locale>es</locale>
+ <avatar/>
+ <buddies>
+  <pagination>
+   <offset>0</offset>
+   <limit>2</limit>
+   <hasMorePages>false</hasMorePages>
+   <totalSize>2</totalSize>
+  </pagination>
+  <users>
+   <user>
+    <username>irrelevantUsername</username>
+    <firstname>irrelevantFirstname</firstname>
+    <lastname>irrelevantLastname</lastname>
+    <locale>es</locale>
+    <avatar/>
+   </user>
+   <user>
+    <username>irrelevantUsername</username>
+    <firstname>irrelevantFirstname</firstname>
+    <lastname>irrelevantLastname</lastname>
+    <locale>es</locale>
+    <avatar/>
+   </user>
+  </users>
+ </buddies>
+</user>

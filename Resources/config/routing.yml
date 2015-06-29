@@ -1,0 +1,9 @@
+rest_api_populate_api_object:
+  pattern: /example
+  defaults:
+    _controller: delr3ves.example.object.controller:populate
+    limit: 10
+    offset: 0
+    embedded: '*'
+  requirements:
+    _method: GET
