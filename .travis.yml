@@ -14,8 +14,9 @@ env:
   - SYMFONY_VERSION=2.7.*
 
 before_script:
+  - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
   - composer require symfony/symfony:${SYMFONY_VERSION}
 
 #script: phpunit --coverage-text
 script: 
-  - bin/atoum --test-all
+  - php mageekguy.atoum.phar --test-all
