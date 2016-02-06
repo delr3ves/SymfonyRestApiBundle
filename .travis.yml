@@ -14,9 +14,13 @@ env:
   - SYMFONY_VERSION=2.7.*
 
 before_script:
-  - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
   - composer require symfony/symfony:${SYMFONY_VERSION}
 
-#script: phpunit --coverage-text
 script: 
-  - php mageekguy.atoum.phar --test-all
+  - mkdir -p build/logs
+  - php bin/phpunit -c phpunit.xml.dist
+
+after_success:
+  - travis_retry php bin/coveralls
+  # or enable logging
+  - travis_retry php bin/coveralls -v
