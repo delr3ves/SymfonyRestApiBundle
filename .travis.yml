@@ -16,4 +16,6 @@ env:
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION}
 
-script: phpunit --coverage-text
+#script: phpunit --coverage-text
+script: 
+  - bin/atoum --test-all
