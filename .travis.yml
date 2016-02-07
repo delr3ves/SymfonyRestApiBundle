@@ -13,13 +13,24 @@ env:
   - SYMFONY_VERSION=2.6.*
   - SYMFONY_VERSION=2.7.*
 
+cache:
+    directories:
+        - $HOME/.composer/cache
+
+install:
+    - mkdir -p build/logs
+    - mv ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ${HOME}/xdebug.ini || return 0
+    - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction
+    - if [ "$CHECKS" = "yes" ]; then travis_retry composer install-devtools; fi;
+
 before_script:
   - composer require symfony/symfony:${SYMFONY_VERSION}
 
-script: 
-  - mkdir -p build/logs
-  - php bin/phpunit -c phpunit.xml.dist
+script:
+    - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+    - php bin/phpunit
+    - rm ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+    - if [ "$CHECKS" = "yes" ]; then composer sca; fi;
 
 after_success:
-  # or enable logging
-  - php bin/coveralls -v
+    - bin/coveralls -v --exclude-no-stmt
