@@ -19,16 +19,10 @@ cache:
 
 install:
     - mkdir -p build/logs
-    - mv ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ${HOME}/xdebug.ini || return 0
-    # - composer self-update
-    # - composer update --no-interaction
     - composer require symfony/symfony:${SYMFONY_VERSION}
 
 script:
-    - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
-    - php bin/phpunit --coverage-clover build/logs/clover.xml
-    - cat build/logs/clover.xml
-    - rm ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+    - php bin/phpunit
 
 after_success:
-    - bin/coveralls -v --coverage_clover=build/logs/cover.xml
+    - bin/coveralls -v
