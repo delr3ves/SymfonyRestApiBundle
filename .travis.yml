@@ -26,8 +26,9 @@ install:
 
 script:
     - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
-    - php bin/phpunit
+    - php bin/phpunit --coverage-clover build/logs/clover.xml
+    - cat build/logs/clover.xml
     - rm ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
 
 after_success:
-    - bin/coveralls -v --exclude-no-stmt
+    - bin/coveralls -v --coverage_clover=build/logs/cover.xml
